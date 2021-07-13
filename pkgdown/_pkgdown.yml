@@ -1,0 +1,32 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: yeti
+
+reference:
+- title: Pretty Printing
+  desc: ~
+  contents:
+  - '`pretty_km_output`'
+  - '`pretty_model_output`'
+  - '`pretty_pvalues`'
+  - '`pretty_pvalues_compareGroups`'
+  - '`run_pretty_km_output`'
+  - '`run_pretty_model_output`'
+  - '`paste_tbl_grp`'
+  - '`stat_paste`'
+
+- title: Statistical Tests and Estimates
+  desc: ~
+  contents:
+  - '`cor_test`'
+  - '`round_away_0`'
+  - '`two_samp_bin_test`'
+  - '`two_samp_cont_test`'
+  
+- title: Reproducibility Tables
+  desc: ~
+  contents:
+  - '`get_full_name`'
+  - '`get_session_info`'

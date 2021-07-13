@@ -1,0 +1,574 @@
+---
+title: "MoffittFunctions"
+output:
+  pdf_document:
+    df_print: kable
+    highlight: tango
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '2'
+header-includes:
+- \hypersetup{colorlinks=true, linkcolor=blue}
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{colortbl}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+vignette: |
+  %\VignetteIndexEntry{MoffittFunctions} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+---
+
+
+\listoftables
+
+\clearpage
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(xtable.comment = FALSE, datatable.verbose = FALSE, scipen = 10, knitr.kable.NA = '', knitr.table.format = 'latex', kableExtra.latex.load_packages = FALSE)   
+
+```
+
+# Overview
+
+MoffittFunctions is a collection of useful functions designed to assist in analysis and creation of professional reports. The current MoffittFunctions functions can be broken down to the following sections:
+
+- Testing Functions
+  - two_samp_bin_test
+  - two_samp_cont_test
+  - cor_test
+  
+- Fancy Output Functions
+  - pretty_pvalues
+  - stat_paste
+  - paste_tbl_grp
+  - pretty_model_output
+  - run_pretty_model_output
+  - pretty_km_output
+  - run_pretty_km_output
+  - pretty_bayesian_output
+  - pretty_bayesian_regression_tests 
+  
+  
+- Utility Functions
+  - round_away_0
+  - get_session_info
+  - get_full_name
+  
+- Example Dataset
+  - Bladder_Cancer
+
+
+## Getting Started
+
+```{r 2, echo=TRUE, results='hide', message=FALSE}
+# Loading MoffittFunctions and Example Dataset
+library(MoffittFunctions)
+data("Bladder_Cancer")
+
+# Loading dplyr for this vignette code
+library(dplyr)
+```
+
+## MoffittTemplates Package
+
+The [MoffittTemplates](https://gitlab.moffitt.usf.edu:8000/ReproducibleResearch/R_Markdown_Templates) package makes extensive use of the `MoffittFunctions` package, and is a great way get started making professional statistical reports.
+
+Code to initially download MoffittTemplates package:
+
+```{r 3, echo=TRUE, eval=FALSE}
+cred = git2r::cred_ssh_key(
+	publickey = "MYPATH/.ssh/id_rsa.pub", 
+	privatekey = "MYPATH/.ssh/id_rsa")
+
+devtools::install_git(
+  "git@gitlab.moffitt.usf.edu:ReproducibleResearch/R_Markdown_Templates.git", 
+  credentials = cred)
+```
+
+RStudio you can **Global Options -> Git/SVN** to see SSH path, and to make SSH key if needed
+
+Once installed, in RStudio go to **File -> New File -> R Markdown -> From Template -> Moffitt PDF Report** to start a new Markdown report using the template. Within the template there is code to load and make use of most of the `MoffittFunctions` functionality.
+
+## Example Dataset
+
+The `Bladder_Cancer` dataset is a real world example dataset used throughout this vignette and most example in the documentation. The dataset is cleaned, using factor variables for categorical variables, and also using labels for all variables (created by the `Hmisc::label()` function).
+
+# Testing Functions
+
+There are currently three testing functions, performing the appropriate statistical test depending on the data and options, returning a p value.
+
+
+## Comparing Two Groups (Binary Variable) for a Binary Variable 
+
+ `two_samp_bin_test()` is used for comparing a binary variable to a binary (two group) variable, with options for Barnard, Fisher's Exact, Chi-Sq, and McNemar tests. 
+
+
+```{r 4, echo=TRUE}
+
+table(Bladder_Cancer$Vital_Status, Bladder_Cancer$PT0N0)
+
+two_samp_bin_test(x = Bladder_Cancer$Vital_Status, y = Bladder_Cancer$PT0N0, 
+                  method = 'fisher')
+
+```
+
+## Comparing Two Groups (Binary Variable) for a Continuous Variable 
+
+`two_samp_cont_test()` is used for comparing a continuous variable to a binary (two group) variable, with parametric (t.test) and non-parametric (Wilcox Rank-Sum) options. Also pair data is allowed, where there are parametric (paired t.test) and non-parametric (Wilcox Signed-Rank) options. 
+
+
+
+```{r 5, echo=TRUE}
+
+by(Bladder_Cancer$Survival_Days, Bladder_Cancer$PT0N0, summary)
+
+two_samp_cont_test(x = Bladder_Cancer$Survival_Days, y = Bladder_Cancer$PT0N0, 
+                   method = 'wilcox')
+
+```
+
+## Comparing Two Continuous Variables (Correlation)
+
+`cor_test()` is used for comparing two continuous variables, with Pearson, Kendall, and Spearman methods. If Spearman method is chosen and either variable has a tie the approximate distribution is use in the `coin::spreaman_test()` function. This is usually the preferred method over the asymptotic approximation, which is the method `stats:cor.test()` uses in cases of ties.
+
+
+```{r 6, echo=TRUE}
+
+cor(Bladder_Cancer$Age_At_Diagnosis, Bladder_Cancer$Survival_Days, 
+    method = 'spearman')
+
+cor_test(x = Bladder_Cancer$Age_At_Diagnosis, y = Bladder_Cancer$Survival_Days,
+         method = 'spearman')
+
+```
+
+# Fancy Output Functions
+
+There are currently seven functions designed to produce professional output that can easily printed in reports.
+
+## P Values
+
+`pretty_pvalues()` can be used on p values, rounding them to a specified digit amount and using < for low p values, as opposed to scientific notation (i.e. "p < 0.0001" if rounding to 4 digits), allows options for emphasizing p-values and specific characters for missing.
+
+```{r 7, echo=TRUE}
+pvalue_example = c(1, 0.06753, 0.004435, NA, 1e-16, 0.563533)
+# For simple p value display
+pretty_pvalues(pvalue_example, digits = 3)
+
+# For display in report
+table_p_Values <- pretty_pvalues(pvalue_example, digits = 3, background = NULL)
+kableExtra::kable(table_p_Values, format = 'latex', escape = FALSE, 
+                  col.names = c("P-values"), caption = 'Fancy P Values')
+
+```
+
+You can also specify if you want `p=` pasted on the front of the p values.
+
+## Basic Combining of Variables
+
+` stat_paste()` is used to combine two or three statistics together, allowing for different rounding and bound character specifications. Common uses for this function are for:
+
+- Mean (sd)
+- Median [min, max]
+- Estimate (SE of Estimate)
+- Estimate (95% CI Lower Bound, Upper Bound)
+- Estimate/Statistic (p value)
+
+```{r 8, echo=TRUE}
+# Simple Examples
+stat_paste(stat1 = 2.45, stat2 = 0.214, stat3 = 55.3, 
+           digits = 2, bound_char = '[')
+stat_paste(stat1 = 6.4864, stat2 = pretty_pvalues(0.0004, digits = 3), 
+           digits = 3, bound_char = '(')
+
+
+Bladder_Cancer %>% 
+  group_by(Gender) %>% 
+  summarise(`Survival Info (Median [Range])` = 
+              stat_paste(stat1 = median(Survival_Months), 
+                         stat2 = min(Survival_Months),
+                         stat3 = max(Survival_Months),
+                         digits = 2, bound_char = '['))
+
+Bladder_Cancer %>% 
+  summarise(
+    `Age vs. Survival Months Cor(p value)` = 
+      stat_paste(stat1 = cor(Age_At_Diagnosis, Survival_Months, method = 'spearman'), 
+                 stat2 = 
+                   pretty_pvalues(
+                     cor_test(Age_At_Diagnosis, Survival_Months, method = 'spearman'), 
+                     digits = 3, include_p = TRUE),
+                 digits = 2, bound_char = '('))
+
+
+
+```
+
+
+\clearpage
+
+## Advanced Combining of Variables
+
+`paste_tbl_grp()` paste together information, often statistics, from two groups. There are two predefined combinations: mean(sd) and median[min,max], but user may also paste any single measure together. 
+
+
+```{r 9, warning=FALSE}
+
+# summary_info <- Bladder_Cancer %>%
+#  group_by(Gender, Any_Downstaging) %>%
+#  summarise_at("Survival_Months", funs(n = length, mean, sd, median, min, max)) %>%
+#  tidyr::gather(variable, value, -Any_Downstaging, -Gender) %>%
+#  tidyr::unite(var, Any_Downstaging, variable) %>% 
+#  tidyr::spread(var, value) %>%
+#  mutate(`No Downstaging` = "No Downstaging", Downstaging = "Downstaging") %>% 
+#  paste_tbl_grp(vars_to_paste = c('n', 'mean_sd', 'median_min_max'), 
+#                first_name = 'No Downstaging', second_name = 'Downstaging')
+summary_info <- Bladder_Cancer %>%
+  group_by(Gender, Any_Downstaging) %>%
+  summarise_at("Survival_Months", funs(n = length, mean, sd,  min, max)) %>%
+  tidyr::gather(variable, value, -Any_Downstaging, -Gender) %>%
+  tidyr::unite(var, Any_Downstaging, variable) %>% 
+  tidyr::spread(var, value) %>%
+  mutate(`No Downstaging` = "No Downstaging")%>% 
+  mutate( `Downstaging` = "Downstaging") %>% 
+  paste_tbl_grp(vars_to_paste = c('n', 'mean','sd', 'min','max'), 
+                first_name = 'No Downstaging', second_name = 'Downstaging')
+ 
+kableExtra::kable(summary_info, format = 'latex', escape = TRUE, booktabs = TRUE, 
+                  caption = 'Summary Information Comparison') %>% 
+  kableExtra::kable_styling(font_size = 6.5) %>% 
+  kableExtra::footnote(
+    'Summary Information for Downstaging vs. No-Downstaging, by Gender')
+
+
+
+```
+
+
+
+## Model Output Functions
+
+`pretty_model_output()` and `run_pretty_model_output()` are used to produce professional tables for single or multiple Linear, Logistic, or Cox Proportional-Hazards Regression Models, calculating estimates, odds ratios, or hazard ratios, respectively, with confidence intervals. P values are also produced. For categorical variables with 3+ levels overall Type 3 p values are calculated (matches SAS's default overall p values), in addition to p values comparing to the first level (reference).
+
+`pretty_model_output()` uses the model fits, while `run_pretty_model_output()` uses the variables and dataset, running the desired model. The `run_pretty_model_output()` will use variable labels if they exist (created by the `Hmisc::label()` function). Many details can be adjusted, such as overall test method ("Wald" or "LR"), title (will be added as column), confidence level, estimate and p value rounded digits, significant alpha level for highlighting along with color, italic, and bolding p value options, and latex or non-latex desired output.
+
+In `run_pretty_model_output()`, `y_in`, `event_in`, and `event_level` are used defined differently, depending on the type of model. For Linear Regression `y_in` is the dependent variable, and `event_in` and `event_level` are left NULL. For Logistic Regression `y_in` is the dependent variable, `event_level` is the event level of the variable (i.e. "1" or "Response"), and `event_in` is left NULL. For Cox Regression `y_in` is the time component, `event_in` is the event status variable, and `event_level` is the event level of the `event_in` variable (i.e. "1" or "Dead"). 
+
+\clearpage
+
+### Linear Regression Example
+
+```{r 10}
+# Using pretty_model_output() for a single multivariable model
+
+my_fit <- lm(
+  Surgery_Year ~ Age_At_Diagnosis + Gender + Clinical_Stage_Grouped +
+    Histology_Grouped, data = Bladder_Cancer)
+pretty_model_output(fit = my_fit, model_data = Bladder_Cancer)
+
+```
+
+
+```{r 11}
+
+vars_to_run = c('Age_At_Diagnosis', 'Gender', 'Clinical_Stage_Grouped', 'Histology_Grouped')
+
+# Using run_pretty_model_output() for multiple univariate linear regression models
+# Use purrr::map_dfr function to run the run_pretty_model_output() multiple times
+linear_univariate_output <- purrr::map_dfr(
+  vars_to_run, run_pretty_model_output, model_data = Bladder_Cancer, 
+  y_in = 'Surgery_Year', event_in = NULL, event_level = NULL, 
+  output_type = 'latex') 
+
+#Use kableExtra to make fancy output
+kableExtra::kable(
+  linear_univariate_output, 'latex', escape = F, booktabs = TRUE, 
+  linesep = '', caption = 'Linear Regression Univariate Models') %>%
+  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack',
+                            headers_to_remove = 1:2, latex_hline = 'major') %>% 
+  kableExtra::kable_styling(font_size = 10)
+```
+
+
+
+```{r 12}
+
+# Using run_pretty_model_output() for a multivariable linear regression model
+linear_multivariable_output <- run_pretty_model_output(
+  x_in = vars_to_run, model_data = Bladder_Cancer, y_in = 'Surgery_Year', 
+  event_in = NULL, event_level = NULL, output_type = 'latex')
+
+#Use kableExtra to make fancy output
+kableExtra::kable(
+  linear_multivariable_output %>% dplyr::select(-n), 'latex', 
+  escape = F, booktabs = TRUE, linesep = '', 
+  caption = 'Linear Regression Multivariable Model') %>%
+  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack',
+                            headers_to_remove = 1:2, latex_hline = 'major') %>% 
+  kableExtra::kable_styling(font_size = 10) %>% 
+  kableExtra::footnote(
+    paste0('Model sample size is ', 
+           linear_multivariable_output %>% select(n) %>% slice(1)))
+  
+```
+
+\clearpage
+
+### Logistic Regression Example
+
+```{r 13}
+# Using pretty_model_output() for a single multivariable model
+
+my_fit <- glm(
+  Any_Downstaging == 'Downstaging' ~ Age_At_Diagnosis + Gender + Clinical_Stage_Grouped + 
+    Histology_Grouped, data = Bladder_Cancer, family = binomial(link = "logit"))
+pretty_model_output(fit = my_fit, model_data = Bladder_Cancer)
+
+```
+
+
+
+```{r 14}
+
+vars_to_run = c('Age_At_Diagnosis', 'Gender', 'Clinical_Stage_Grouped', 'Histology_Grouped')
+
+# Using run_pretty_model_output() for multiple univariate logistic regression models
+# Use purrr::map_dfr function to run the run_pretty_model_output() multiple times
+logistic_univariate_output <- purrr::map_dfr(
+  vars_to_run, run_pretty_model_output, model_data = Bladder_Cancer, 
+  y_in = 'Any_Downstaging', event_in = NULL, event_level = 'Downstaging', 
+  output_type = 'latex') 
+
+#Use kableExtra to make fancy output
+kableExtra::kable(
+  logistic_univariate_output, 'latex', escape = F, booktabs = TRUE, 
+  linesep = '', caption = 'Logistic Regression Univariate Models') %>%
+  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack',
+                            headers_to_remove = 1:2, latex_hline = 'major') %>% 
+  kableExtra::kable_styling(font_size = 10)
+```
+
+
+```{r 15}
+
+# Using run_pretty_model_output() for a multivariable logistic regression model
+logistic_multivariable_output <- run_pretty_model_output(
+  x_in = vars_to_run, model_data = Bladder_Cancer, y_in = 'Any_Downstaging', 
+  event_in = NULL, event_level = 'Downstaging', output_type = 'latex')
+
+#Use kableExtra to make fancy output
+kableExtra::kable(
+  logistic_multivariable_output %>% dplyr::select(-n), 'latex', 
+  escape = F, booktabs = TRUE, linesep = '', 
+  caption = 'Logistic Regression Multivariable Model') %>%
+  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack',
+                            headers_to_remove = 1:2, latex_hline = 'major') %>% 
+  kableExtra::kable_styling(font_size = 10) %>% 
+  kableExtra::footnote(
+    paste0('Model sample size is ', 
+           logistic_multivariable_output %>% select(n) %>% slice(1)))
+  
+```
+
+
+\clearpage
+
+##  Bayesian Output functions
+
+`pretty_bayesian_output()` and `pretty_bayesian_regression_tests()` are used to produce professional tables for single or multivariable Bayesian Linear or Logistic regression.
+ pretty_bayesian_output takes a stanreg fit object  ( family = binomial or guassian), and calculates estimates of regression coefficients or odds ratios. 
+
+
+```{r 15b, echo=T, results='hide'}
+
+ybin <- sample(0:1, 100, replace = TRUE)
+y <- rexp(100,.1)
+x1 <- rnorm(100)
+x2 <- y + rnorm(100)
+x3 <- factor(sample(letters[1:4],100,replace = TRUE))
+my_data <- data.frame(y, ybin, x1, x2, x3)
+library(rstanarm)
+lm_fit <- stan_glm(y ~ x1+ x2 + x3, data = my_data, refresh = 0 )
+pretty_bayesian_output(fit = lm_fit, model_data = my_data)
+
+library(dplyr)
+# Logistic Regression
+my_fit <- stan_glm(ybin ~ x1 + x2 + x3, data = my_data, family = binomial, refresh = 0)
+my_pretty_model_output <- pretty_bayesian_output(fit = my_fit, model_data = my_data)
+```
+
+\clearpage
+
+```{r 15c, message=FALSE, warning=FALSE}
+# Printing of Fancy table in HTML
+kableExtra::kable(my_pretty_model_output, 'latex', caption = 'Bayesian Logistic regression model')  #%>% 
+ #  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack')
+  
+```
+
+
+
+\clearpage
+
+### Cox Proportional-Hazards Regression Example
+
+```{r 16}
+# Using pretty_model_output() for a single multivariable model
+
+surv_obj <- survival::Surv(Bladder_Cancer$Survival_Months, Bladder_Cancer$Vital_Status == 'Dead')   
+my_fit <- survival::coxph(
+  surv_obj ~ Age_At_Diagnosis + Gender + Clinical_Stage_Grouped + 
+    Histology_Grouped, data = Bladder_Cancer)
+pretty_model_output(fit = my_fit, model_data = Bladder_Cancer)
+
+```
+
+
+
+```{r 17}
+
+vars_to_run = c('Age_At_Diagnosis', 'Gender', 'Clinical_Stage_Grouped', 'Histology_Grouped')
+
+# Using run_pretty_model_output() for multiple univariate Cox regression models
+# Use purrr::map_dfr function to run the run_pretty_model_output() multiple times
+cox_univariate_output <- purrr::map_dfr(
+  vars_to_run, run_pretty_model_output, model_data = Bladder_Cancer, 
+  y_in = 'Survival_Months', event_in = 'Vital_Status', event_level = 'Dead', 
+  output_type = 'latex') 
+
+#Use kableExtra to make fancy output
+kableExtra::kable(
+  cox_univariate_output, 'latex', escape = F, booktabs = TRUE, 
+  linesep = '', caption = 'Cox Proportional-Hazards Regression Univariate Models') %>%
+  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack',
+                            headers_to_remove = 1:2, latex_hline = 'major') %>% 
+  kableExtra::kable_styling(font_size = 10)
+```
+
+
+```{r 18}
+
+# Using run_pretty_model_output() for a multivariable Cox regression model
+cox_multivariable_output <- run_pretty_model_output(
+  x_in = vars_to_run, model_data = Bladder_Cancer, y_in = 'Survival_Months', 
+  event_in = 'Vital_Status', event_level = 'Dead', output_type = 'latex')
+
+#Use kableExtra to make fancy output
+kableExtra::kable(
+  cox_multivariable_output %>% dplyr::select(-`n (events)`), 'latex', 
+  escape = F, booktabs = TRUE, linesep = '', 
+  caption = 'Cox Proportional-Hazards Regression Multivariable Model') %>%
+  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack',
+                            headers_to_remove = 1:2, latex_hline = 'major') %>% 
+  kableExtra::kable_styling(font_size = 10) %>% 
+  kableExtra::footnote(
+    paste0('Model sample size (events) is ', 
+           cox_multivariable_output %>% select(`n (events)`) %>% slice(1)))
+  
+```
+
+
+
+## Kaplan–Meier Output Functions
+
+`pretty_km_output()` and `run_pretty_km_output()` are used to produce professional tables with Kaplan–Meier median survival estimates, and the estimates at given time points, if listed. `pretty_km_output()` uses a survfit object, while `run_pretty_km_output()` uses the variables, and strata if applicable, and runs creates the survfit objects, also calculating the log-rank p value, if applicable.
+
+ Many details can be adjusted, such as title (will be added as column), strata name, confidence level, survival estimate prefix (default is "Time"), survival estimate, median estimate, and p value rounded digits, significant alpha level for highlighting along with color, italic, and bolding p value options, and latex or non-latex desired output.
+
+
+```{r 19}
+
+# Using pretty_km_output() for a single comparisons
+surv_obj <- survival::Surv(Bladder_Cancer$Survival_Months, 
+                           Bladder_Cancer$Vital_Status == 'Dead')   
+downstage_fit <- survival::survfit(surv_obj ~ PT0N0, data = Bladder_Cancer)
+
+pretty_km_output(fit = downstage_fit, time_est = 60, 
+                 surv_est_prefix = 'Month', surv_est_digits = 3)
+
+```
+
+
+```{r 20}
+# Using run_pretty_km_output() for multiple comparisons
+
+# First create vector of strata to compare (NA for no strate). 
+vars_to_run = c(NA, 'Gender', 'Clinical_Stage_Grouped', 'PT0N0', 'Any_Downstaging')
+
+# Next use purrr::map_dfr function to run the run_pretty_km_output() multiple times
+km_output <- purrr::map_dfr(
+  vars_to_run, run_pretty_km_output, model_data = Bladder_Cancer, 
+  time_in = 'Survival_Months', event_in = 'Vital_Status', event_level = 'Dead', 
+  time_est = c(24,60), surv_est_prefix = 'Month', p_digits = 5, 
+  output_type = 'latex') %>% 
+  select(Group, Level, everything())
+
+#Finally use kableExtra to make fancy output
+kableExtra::kable(km_output, 'latex', escape = F, booktabs = TRUE, linesep = '', 
+     caption = 'Kaplan–Meier Output (Multiple Comparisons)') %>%
+  kableExtra::collapse_rows(c(1:2), row_group_label_position = 'stack',
+                            headers_to_remove = 1:2, latex_hline = 'major') %>% 
+  kableExtra::kable_styling(font_size = 7.5) %>% 
+  kableExtra::footnote('Survival Percentage Estimates at 24 and 60 Months')
+
+
+
+  
+```
+
+\clearpage
+
+
+# Utility Functions
+
+`round_away_0()` is a function to properly perform mathematical rounding (i.e. rounding away from 0 when tied), as opposed to the `round()` function, which rounds to the nearest even number when tied. Also `round_away_0()` allows for trailing zeros (i.e. 0.100 if rounding to 3 digits). 
+
+```{r 21}
+vals_to_round = c(NA,-3.5:3.5)
+vals_to_round
+round(vals_to_round)
+round_away_0(vals_to_round)
+round_away_0(vals_to_round, digits = 2, trailing_zeros = TRUE)
+```
+
+`get_session_info()` produces reproducible tables, which are great to add to the end of reports. The first table gives Software Session Information and the second table gives Software Package Version Information `get_full_name()` is a function used by `get_session_info()` to get the user's name, based on user's ID.
+
+```{r 22}
+my_session_info <- get_session_info()
+
+kableExtra::kable(my_session_info$platform_table, 'latex', booktabs = TRUE, 
+      linesep = '', caption = "Reproducibility Software Session Information") %>% 
+      kableExtra::kable_styling(font_size = 8)
+
+ 
+```
+
+```{r 23}
+my_session_info <- get_session_info()
+
+ 
+kableExtra::kable(my_session_info$packages_table, 'latex', booktabs = TRUE, 
+      linesep = '', caption = "Reproducibility Software Package Version Information") %>% 
+      kableExtra::kable_styling(font_size = 8)
+
+```

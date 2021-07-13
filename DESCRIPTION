@@ -1,0 +1,62 @@
+Package: MoffittFunctions
+Title: Moffitt Functions
+Version: 1.0.0
+Authors@R: 
+    c(person(given = "Jimmy",
+             family = "Fulp",
+             role = "aut",
+             email = "William.Fulp@moffitt.org"),
+      person(given = "Ram",
+             family = "Thapa",
+             role = "aut",
+             email = "Ram.Thapa@moffitt.org"),
+      person(given = "Zachary",
+             family = "Thompson",
+             role = c("aut", "cre"),
+             email = "Zachary.Thompson@moffitt.org"))
+Description: Statistical, data processing, and annotation
+    functions for Moffitt Biostat.
+License: GPL-3
+URL: https://gitlab.moffitt.usf.edu:8000/ReproducibleResearch/MoffittFunctions
+BugReports: https://gitlab.moffitt.usf.edu:8000/ReproducibleResearch/MoffittFunctions/-/issues
+Imports: 
+    broom (>= 0.5.0),
+    car,
+    coin,
+    data.table,
+    devtools (>= 2.0.0),
+    dplyr,
+    Exact,
+    haven (>= 2.0.0),
+    Hmisc,
+    kableExtra, 
+    purrr,
+    sessioninfo,
+    survival,
+    tibble,
+    tidyr,
+    compareGroups,
+    lme4,
+    tidyverse, 
+    broom.mixed,
+    stringr,
+    coxme, 
+    magrittr,
+    ggeffects,
+    sjmisc, 
+    splines,
+    rlang,
+    rstanarm,
+    BayesFactor,
+    bayestestR,
+    sjlabelled
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+Authors:  Zachary Thompson, Ram Thapa, William (Jimmy) Fulp
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Depends: R (>= 3.5.0)

@@ -1,0 +1,1318 @@
+\documentclass[table]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Introduction\_to\_MoffittFunctions},
+            pdfauthor={William (Jimmy) Fulp},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Introduction\_to\_MoffittFunctions}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{William (Jimmy) Fulp}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{2019-11-22}
+
+\hypersetup{colorlinks=true, linkcolor=blue}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{colortbl}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\listoftables
+
+\clearpage
+
+\hypertarget{overview}{%
+\section{Overview}\label{overview}}
+
+MoffittFunctions is a collection of useful functions designed to assist
+in analysis and creation of professional reports. The current
+MoffittFunctions functions can be broken down to the following sections:
+
+\begin{itemize}
+\tightlist
+\item
+  Testing Functions
+
+  \begin{itemize}
+  \tightlist
+  \item
+    two\_samp\_bin\_test
+  \item
+    two\_samp\_cont\_test
+  \item
+    cor\_test
+  \end{itemize}
+\item
+  Fancy Output Functions
+
+  \begin{itemize}
+  \tightlist
+  \item
+    pretty\_pvalues
+  \item
+    stat\_paste
+  \item
+    paste\_tbl\_grp
+  \item
+    pretty\_model\_output
+  \item
+    run\_pretty\_model\_output
+  \item
+    pretty\_km\_output
+  \item
+    run\_pretty\_km\_output
+  \end{itemize}
+\item
+  Utility Functions
+
+  \begin{itemize}
+  \tightlist
+  \item
+    round\_away\_0
+  \item
+    get\_session\_info
+  \item
+    get\_full\_name
+  \end{itemize}
+\item
+  Example Dataset
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Bladder\_Cancer
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{getting-started}{%
+\subsection{Getting Started}\label{getting-started}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Loading MoffittFunctions and Example Dataset}
+\KeywordTok{library}\NormalTok{(MoffittFunctions)}
+\KeywordTok{data}\NormalTok{(}\StringTok{"Bladder_Cancer"}\NormalTok{)}
+
+\CommentTok{# Loading dplyr for this vignette code}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{moffitttemplates-package}{%
+\subsection{MoffittTemplates Package}\label{moffitttemplates-package}}
+
+The
+\href{https://gitlab.moffitt.usf.edu:8000/ReproducibleResearch/R_Markdown_Templates}{MoffittTemplates}
+package makes extensive use of the \texttt{MoffittFunctions} package,
+and is a great way get started making professional statistical reports.
+
+Code to initially download MoffittTemplates package:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cred =}\StringTok{ }\NormalTok{git2r}\OperatorTok{::}\KeywordTok{cred_ssh_key}\NormalTok{(}
+    \DataTypeTok{publickey =} \StringTok{"MYPATH/.ssh/id_rsa.pub"}\NormalTok{, }
+    \DataTypeTok{privatekey =} \StringTok{"MYPATH/.ssh/id_rsa"}\NormalTok{)}
+
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_git}\NormalTok{(}
+  \StringTok{"git@gitlab.moffitt.usf.edu:ReproducibleResearch/R_Markdown_Templates.git"}\NormalTok{, }
+  \DataTypeTok{credentials =}\NormalTok{ cred)}
+\end{Highlighting}
+\end{Shaded}
+
+RStudio you can \textbf{Global Options -\textgreater{} Git/SVN} to see
+SSH path, and to make SSH key if needed
+
+Once installed, in RStudio go to \textbf{File -\textgreater{} New File
+-\textgreater{} R Markdown -\textgreater{} From Template -\textgreater{}
+Moffitt PDF Report} to start a new Markdown report using the template.
+Within the template there is code to load and make use of most of the
+\texttt{MoffittFunctions} functionality.
+
+\hypertarget{example-dataset}{%
+\subsection{Example Dataset}\label{example-dataset}}
+
+The \texttt{Bladder\_Cancer} dataset is a real world example dataset
+used throughout this vignette and most example in the documentation. The
+dataset is cleaned, using factor variables for categorical variables,
+and also using labels for all variables (created by the
+\texttt{Hmisc::label()} function).
+
+\hypertarget{testing-functions}{%
+\section{Testing Functions}\label{testing-functions}}
+
+There are currently three testing functions, performing the appropriate
+statistical test depending on the data and options, returning a p value.
+
+\hypertarget{comparing-two-groups-binary-variable-for-a-binary-variable}{%
+\subsection{Comparing Two Groups (Binary Variable) for a Binary
+Variable}\label{comparing-two-groups-binary-variable-for-a-binary-variable}}
+
+\texttt{two\_samp\_bin\_test()} is used for comparing a binary variable
+to a binary (two group) variable, with options for Barnard, Fisher's
+Exact, Chi-Sq, and McNemar tests.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\KeywordTok{table}\NormalTok{(Bladder_Cancer}\OperatorTok{$}\NormalTok{Vital_Status, Bladder_Cancer}\OperatorTok{$}\NormalTok{PT0N0)}
+\CommentTok{#>        }
+\CommentTok{#>         No Completed Response Complete Response}
+\CommentTok{#>   Alive                    74                33}
+\CommentTok{#>   Dead                     57                 2}
+
+\KeywordTok{two_samp_bin_test}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Bladder_Cancer}\OperatorTok{$}\NormalTok{Vital_Status, }\DataTypeTok{y =}\NormalTok{ Bladder_Cancer}\OperatorTok{$}\NormalTok{PT0N0, }
+                  \DataTypeTok{method =} \StringTok{'fisher'}\NormalTok{)}
+\CommentTok{#> [1] 0.00001536125}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{comparing-two-groups-binary-variable-for-a-continuous-variable}{%
+\subsection{Comparing Two Groups (Binary Variable) for a Continuous
+Variable}\label{comparing-two-groups-binary-variable-for-a-continuous-variable}}
+
+\texttt{two\_samp\_cont\_test()} is used for comparing a continuous
+variable to a binary (two group) variable, with parametric (t.test) and
+non-parametric (Wilcox Rank-Sum) options. Also pair data is allowed,
+where there are parametric (paired t.test) and non-parametric (Wilcox
+Signed-Rank) options.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\KeywordTok{by}\NormalTok{(Bladder_Cancer}\OperatorTok{$}\NormalTok{Survival_Days, Bladder_Cancer}\OperatorTok{$}\NormalTok{PT0N0, summary)}
+\CommentTok{#> Bladder_Cancer$PT0N0: No Completed Response}
+\CommentTok{#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. }
+\CommentTok{#>     3.0   315.0   593.0   896.6  1292.5  3873.0 }
+\CommentTok{#> -------------------------------------------------------- }
+\CommentTok{#> Bladder_Cancer$PT0N0: Complete Response}
+\CommentTok{#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. }
+\CommentTok{#>      34     538     817    1096    1581    3137}
+
+\KeywordTok{two_samp_cont_test}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Bladder_Cancer}\OperatorTok{$}\NormalTok{Survival_Days, }\DataTypeTok{y =}\NormalTok{ Bladder_Cancer}\OperatorTok{$}\NormalTok{PT0N0, }
+                   \DataTypeTok{method =} \StringTok{'wilcox'}\NormalTok{)}
+\CommentTok{#> [1] 0.06303205}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{comparing-two-continuous-variables-correlation}{%
+\subsection{Comparing Two Continuous Variables
+(Correlation)}\label{comparing-two-continuous-variables-correlation}}
+
+\texttt{cor\_test()} is used for comparing two continuous variables,
+with Pearson, Kendall, and Spearman methods. If Spearman method is
+chosen and either variable has a tie the approximate distribution is use
+in the \texttt{coin::spreaman\_test()} function. This is usually the
+preferred method over the asymptotic approximation, which is the method
+\texttt{stats:cor.test()} uses in cases of ties.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\KeywordTok{cor}\NormalTok{(Bladder_Cancer}\OperatorTok{$}\NormalTok{Age_At_Diagnosis, Bladder_Cancer}\OperatorTok{$}\NormalTok{Survival_Days, }
+    \DataTypeTok{method =} \StringTok{'spearman'}\NormalTok{)}
+\CommentTok{#> [1] -0.13349}
+
+\KeywordTok{cor_test}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Bladder_Cancer}\OperatorTok{$}\NormalTok{Age_At_Diagnosis, }\DataTypeTok{y =}\NormalTok{ Bladder_Cancer}\OperatorTok{$}\NormalTok{Survival_Days,}
+         \DataTypeTok{method =} \StringTok{'spearman'}\NormalTok{)}
+\CommentTok{#> [1] 0.0852}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{fancy-output-functions}{%
+\section{Fancy Output Functions}\label{fancy-output-functions}}
+
+There are currently seven functions designed to produce professional
+output that can easily printed in reports.
+
+\hypertarget{p-values}{%
+\subsection{P Values}\label{p-values}}
+
+\texttt{pretty\_pvalues()} can be used on p values, rounding them to a
+specified digit amount and using \textless{} for low p values, as
+opposed to scientific notation (i.e.~``p \textless{} 0.0001'' if
+rounding to 4 digits), allows options for emphasizing p-values and
+specific characters for missing.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pvalue_example =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{0.06753}\NormalTok{, }\FloatTok{0.004435}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\FloatTok{1e-16}\NormalTok{, }\FloatTok{0.563533}\NormalTok{)}
+\CommentTok{# For simple p value display}
+\KeywordTok{pretty_pvalues}\NormalTok{(pvalue_example, }\DataTypeTok{digits =} \DecValTok{3}\NormalTok{)}
+\CommentTok{#> [1] "1.000"  "0.068"  "0.004"  "---"    "<0.001" "0.564"}
+
+\CommentTok{# For display in report}
+\NormalTok{table_p_Values <-}\StringTok{ }\KeywordTok{pretty_pvalues}\NormalTok{(pvalue_example, }\DataTypeTok{digits =} \DecValTok{3}\NormalTok{, }\DataTypeTok{background =} \StringTok{"yellow"}\NormalTok{)}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(table_p_Values, }\DataTypeTok{format =} \StringTok{'latex'}\NormalTok{, }\DataTypeTok{escape =} \OtherTok{FALSE}\NormalTok{, }
+                  \DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{"P-values"}\NormalTok{), }\DataTypeTok{caption =} \StringTok{'Fancy P Values'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:7}Fancy P Values}
+\centering
+\begin{tabular}{l}
+\hline
+P-values\\
+\hline
+1.000\\
+\hline
+0.068\\
+\hline
+\cellcolor{yellow}{0.004}\\
+\hline
+---\\
+\hline
+\cellcolor{yellow}{<0.001}\\
+\hline
+0.564\\
+\hline
+\end{tabular}
+\end{table}
+
+You can also specify if you want \texttt{p=} pasted on the front of the
+p values.
+
+\hypertarget{basic-combining-of-variables}{%
+\subsection{Basic Combining of
+Variables}\label{basic-combining-of-variables}}
+
+\texttt{stat\_paste()} is used to combine two or three statistics
+together, allowing for different rounding and bound character
+specifications. Common uses for this function are for:
+
+\begin{itemize}
+\tightlist
+\item
+  Mean (sd)
+\item
+  Median {[}min, max{]}
+\item
+  Estimate (SE of Estimate)
+\item
+  Estimate (95\% CI Lower Bound, Upper Bound)
+\item
+  Estimate/Statistic (p value)
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Simple Examples}
+\KeywordTok{stat_paste}\NormalTok{(}\DataTypeTok{stat1 =} \FloatTok{2.45}\NormalTok{, }\DataTypeTok{stat2 =} \FloatTok{0.214}\NormalTok{, }\DataTypeTok{stat3 =} \FloatTok{55.3}\NormalTok{, }
+           \DataTypeTok{digits =} \DecValTok{2}\NormalTok{, }\DataTypeTok{bound_char =} \StringTok{'['}\NormalTok{)}
+\CommentTok{#> [1] "2.45 [0.21, 55.30]"}
+\KeywordTok{stat_paste}\NormalTok{(}\DataTypeTok{stat1 =} \FloatTok{6.4864}\NormalTok{, }\DataTypeTok{stat2 =} \KeywordTok{pretty_pvalues}\NormalTok{(}\FloatTok{0.0004}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{3}\NormalTok{), }
+           \DataTypeTok{digits =} \DecValTok{3}\NormalTok{, }\DataTypeTok{bound_char =} \StringTok{'('}\NormalTok{)}
+\CommentTok{#> [1] "6.486 (<0.001)"}
+
+
+\NormalTok{Bladder_Cancer }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Gender) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\StringTok{`}\DataTypeTok{Survival Info (Median [Range])}\StringTok{`}\NormalTok{ =}\StringTok{ }
+\StringTok{              }\KeywordTok{stat_paste}\NormalTok{(}\DataTypeTok{stat1 =} \KeywordTok{median}\NormalTok{(Survival_Months), }
+                         \DataTypeTok{stat2 =} \KeywordTok{min}\NormalTok{(Survival_Months),}
+                         \DataTypeTok{stat3 =} \KeywordTok{max}\NormalTok{(Survival_Months),}
+                         \DataTypeTok{digits =} \DecValTok{2}\NormalTok{, }\DataTypeTok{bound_char =} \StringTok{'['}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l|l}
+\hline
+Gender & Survival Info (Median [Range])\\
+\hline
+Female & 30.21 [1.90, 109.00]\\
+\hline
+Male & 20.40 [0.10, 127.19]\\
+\hline
+\end{tabular}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{Bladder_Cancer }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}
+    \StringTok{`}\DataTypeTok{Age vs. Survival Months Cor(p value)}\StringTok{`}\NormalTok{ =}\StringTok{ }
+\StringTok{      }\KeywordTok{stat_paste}\NormalTok{(}\DataTypeTok{stat1 =} \KeywordTok{cor}\NormalTok{(Age_At_Diagnosis, Survival_Months, }\DataTypeTok{method =} \StringTok{'spearman'}\NormalTok{), }
+                 \DataTypeTok{stat2 =} 
+                   \KeywordTok{pretty_pvalues}\NormalTok{(}
+                     \KeywordTok{cor_test}\NormalTok{(Age_At_Diagnosis, Survival_Months, }\DataTypeTok{method =} \StringTok{'spearman'}\NormalTok{), }
+                     \DataTypeTok{digits =} \DecValTok{3}\NormalTok{, }\DataTypeTok{include_p =} \OtherTok{TRUE}\NormalTok{),}
+                 \DataTypeTok{digits =} \DecValTok{2}\NormalTok{, }\DataTypeTok{bound_char =} \StringTok{'('}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l}
+\hline
+Age vs. Survival Months Cor(p value)\\
+\hline
+-0.13 (p=0.085)\\
+\hline
+\end{tabular}
+
+\clearpage
+
+\hypertarget{advanced-combining-of-variables}{%
+\subsection{Advanced Combining of
+Variables}\label{advanced-combining-of-variables}}
+
+\texttt{paste\_tbl\_grp()} paste together information, often statistics,
+from two groups. There are two predefined combinations: mean(sd) and
+median{[}min,max{]}, but user may also paste any single measure
+together.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{summary_info <-}\StringTok{ }\NormalTok{Bladder_Cancer }\OperatorTok{%>%}
+\StringTok{ }\KeywordTok{group_by}\NormalTok{(Gender, Any_Downstaging) }\OperatorTok{%>%}
+\StringTok{ }\KeywordTok{summarise_at}\NormalTok{(}\StringTok{"Survival_Months"}\NormalTok{, }\KeywordTok{funs}\NormalTok{(}\DataTypeTok{n =}\NormalTok{ length, mean, sd, median, min, max)) }\OperatorTok{%>%}
+\StringTok{ }\NormalTok{tidyr}\OperatorTok{::}\KeywordTok{gather}\NormalTok{(variable, value, }\OperatorTok{-}\NormalTok{Any_Downstaging, }\OperatorTok{-}\NormalTok{Gender) }\OperatorTok{%>%}
+\StringTok{ }\NormalTok{tidyr}\OperatorTok{::}\KeywordTok{unite}\NormalTok{(var, Any_Downstaging, variable) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{ }\NormalTok{tidyr}\OperatorTok{::}\KeywordTok{spread}\NormalTok{(var, value) }\OperatorTok{%>%}
+\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\StringTok{`}\DataTypeTok{No Downstaging}\StringTok{`}\NormalTok{ =}\StringTok{ "No Downstaging"}\NormalTok{, }\DataTypeTok{Downstaging =} \StringTok{"Downstaging"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{ }\KeywordTok{paste_tbl_grp}\NormalTok{(}\DataTypeTok{vars_to_paste =} \KeywordTok{c}\NormalTok{(}\StringTok{'n'}\NormalTok{, }\StringTok{'mean_sd'}\NormalTok{, }\StringTok{'median_min_max'}\NormalTok{), }
+               \DataTypeTok{first_name =} \StringTok{'No Downstaging'}\NormalTok{, }\DataTypeTok{second_name =} \StringTok{'Downstaging'}\NormalTok{)}
+
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(summary_info, }\DataTypeTok{format =} \StringTok{'latex'}\NormalTok{, }\DataTypeTok{escape =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }
+                  \DataTypeTok{caption =} \StringTok{'Summary Information Comparison'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \FloatTok{6.5}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{footnote}\NormalTok{(}
+    \StringTok{'Summary Information for Downstaging vs. No-Downstaging, by Gender'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:9}Summary Information Comparison}
+\centering
+\fontsize{6.5}{8.5}\selectfont
+\begin{tabular}{lllll}
+\toprule
+Gender & Comparison & n\_comparison & mean\_sd\_comparison & median\_min\_max\_comparison\\
+\midrule
+Female & No Downstaging vs. Downstaging & 23 vs. 19 & 24 (19) vs. 40 (28) & 15 [2, 76] vs. 36 [7, 109]\\
+Male & No Downstaging vs. Downstaging & 74 vs. 50 & 28 (27) vs. 34 (29) & 18 [1, 127] vs. 24 [0, 109]\\
+\bottomrule
+\multicolumn{5}{l}{\textit{Note: }}\\
+\multicolumn{5}{l}{Summary Information for Downstaging vs. No-Downstaging, by Gender}\\
+\end{tabular}
+\end{table}
+
+\hypertarget{model-output-functions}{%
+\subsection{Model Output Functions}\label{model-output-functions}}
+
+\texttt{pretty\_model\_output()} and
+\texttt{run\_pretty\_model\_output()} are used to produce professional
+tables for single or multiple Linear, Logistic, or Cox
+Proportional-Hazards Regression Models, calculating estimates, odds
+ratios, or hazard ratios, respectively, with confidence intervals. P
+values are also produced. For categorical variables with 3+ levels
+overall Type 3 p values are calculated (matches SAS's default overall p
+values), in addition to p values comparing to the first level
+(reference).
+
+\texttt{pretty\_model\_output()} uses the model fits, while
+\texttt{run\_pretty\_model\_output()} uses the variables and dataset,
+running the desired model. The \texttt{run\_pretty\_model\_output()}
+will use variable labels if they exist (created by the
+\texttt{Hmisc::label()} function). Many details can be adjusted, such as
+overall test method (``Wald'' or ``LR''), title (will be added as
+column), confidence level, estimate and p value rounded digits,
+significant alpha level for highlighting along with color, italic, and
+bolding p value options, and latex or non-latex desired output.
+
+In \texttt{run\_pretty\_model\_output()}, \texttt{y\_in},
+\texttt{event\_in}, and \texttt{event\_level} are used defined
+differently, depending on the type of model. For Linear Regression
+\texttt{y\_in} is the dependent variable, and \texttt{event\_in} and
+\texttt{event\_level} are left NULL. For Logistic Regression
+\texttt{y\_in} is the dependent variable, \texttt{event\_level} is the
+event level of the variable (i.e.~``1'' or ``Response''), and
+\texttt{event\_in} is left NULL. For Cox Regression \texttt{y\_in} is
+the time component, \texttt{event\_in} is the event status variable, and
+\texttt{event\_level} is the event level of the \texttt{event\_in}
+variable (i.e.~``1'' or ``Dead'').
+
+\clearpage
+
+\hypertarget{linear-regression-example}{%
+\subsubsection{Linear Regression
+Example}\label{linear-regression-example}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Using pretty_model_output() for a single multivariable model}
+
+\NormalTok{my_fit <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(}
+\NormalTok{  Surgery_Year }\OperatorTok{~}\StringTok{ }\NormalTok{Age_At_Diagnosis }\OperatorTok{+}\StringTok{ }\NormalTok{Gender }\OperatorTok{+}\StringTok{ }\NormalTok{Clinical_Stage_Grouped }\OperatorTok{+}
+\StringTok{    }\NormalTok{Histology_Grouped, }\DataTypeTok{data =}\NormalTok{ Bladder_Cancer)}
+\KeywordTok{pretty_model_output}\NormalTok{(}\DataTypeTok{fit =}\NormalTok{ my_fit, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l|l|l|l|l}
+\hline
+Variable & Level & Est (95\% CI) & P Value & Overall P Value\\
+\hline
+Age &  & 0.034 (-0.014, 0.081) & 0.1617 & \\
+\hline
+Gender & Female & 1.0 (Reference) & - & \\
+\hline
+Gender & Male & -0.414 (-1.379, 0.551) & 0.3983 & \\
+\hline
+Clinical AJCC Stage & Stage I/II (<=T2NxMx) & 1.0 (Reference) & - & \\
+\hline
+Clinical AJCC Stage & Stage III (T3NxMx) & -2.190 (-3.259, -1.120) & <0.0001 & \\
+\hline
+Clinical AJCC Stage & Stage IV (T4NxMx) & -1.007 (-2.490, 0.476) & 0.1817 & \\
+\hline
+Histology & Pure Urothelial Neoplasia & 1.0 (Reference) & - & \\
+\hline
+Histology & Mixed Tumors & 1.109 (0.093, 2.126) & 0.0326 & \\
+\hline
+Histology & Variant Histology & 1.661 (0.605, 2.717) & 0.0022 & \\
+\hline
+ &  &  &  & ---\\
+\hline
+ &  &  &  & ---\\
+\hline
+\end{tabular}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{vars_to_run =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'Age_At_Diagnosis'}\NormalTok{, }\StringTok{'Gender'}\NormalTok{, }\StringTok{'Clinical_Stage_Grouped'}\NormalTok{, }\StringTok{'Histology_Grouped'}\NormalTok{)}
+
+\CommentTok{# Using run_pretty_model_output() for multiple univariate linear regression models}
+\CommentTok{# Use purrr::map_dfr function to run the run_pretty_model_output() multiple times}
+\NormalTok{linear_univariate_output <-}\StringTok{ }\NormalTok{purrr}\OperatorTok{::}\KeywordTok{map_dfr}\NormalTok{(}
+\NormalTok{  vars_to_run, run_pretty_model_output, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer, }
+  \DataTypeTok{y_in =} \StringTok{'Surgery_Year'}\NormalTok{, }\DataTypeTok{event_in =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{event_level =} \OtherTok{NULL}\NormalTok{, }
+  \DataTypeTok{output_type =} \StringTok{'latex'}\NormalTok{) }
+
+\CommentTok{#Use kableExtra to make fancy output}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
+\NormalTok{  linear_univariate_output, }\StringTok{'latex'}\NormalTok{, }\DataTypeTok{escape =}\NormalTok{ F, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }
+  \DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }\DataTypeTok{caption =} \StringTok{'Linear Regression Univariate Models'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{collapse_rows}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{), }\DataTypeTok{row_group_label_position =} \StringTok{'stack'}\NormalTok{,}
+                            \DataTypeTok{headers_to_remove =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{latex_hline =} \StringTok{'major'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:11}Linear Regression Univariate Models}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}{llllll}
+\toprule
+ &  & Est (95\% CI) & P Value & Overall P Value & n\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Age}}\\
+\hspace{1em} &  & 0.033 (-0.018, 0.083) & 0.2040 &  & n=166\\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Gender}}\\
+\hspace{1em} & Female & 1.0 (Reference) & --- &  & n=166\\
+
+\hspace{1em} & Male & -0.170 (-1.176, 0.836) & 0.7388 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Clinical AJCC Stage}}\\
+\hspace{1em} & Stage I/II (<=T2NxMx) & 1.0 (Reference) & --- &  & n=166\\
+
+\hspace{1em} & Stage III (T3NxMx) & -2.109 (-3.187, -1.031) & \cellcolor{yellow}{0.0002} &  & \\
+
+\hspace{1em} & Stage IV (T4NxMx) & -0.672 (-2.113, 0.770) & 0.3588 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{1}}\\
+\hspace{1em} &  &  &  & --- \vphantom{1} & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Histology}}\\
+\hspace{1em} & Pure Urothelial Neoplasia & 1.0 (Reference) & --- &  & n=166\\
+
+\hspace{1em} & Mixed Tumors & 0.831 (-0.185, 1.846) & 0.1083 &  & \\
+
+\hspace{1em} & Variant Histology & 1.870 (0.779, 2.961) & \cellcolor{yellow}{0.0009} &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{1}}\\
+\hspace{1em} &  &  &  & --- & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# Using run_pretty_model_output() for a multivariable linear regression model}
+\NormalTok{linear_multivariable_output <-}\StringTok{ }\KeywordTok{run_pretty_model_output}\NormalTok{(}
+  \DataTypeTok{x_in =}\NormalTok{ vars_to_run, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer, }\DataTypeTok{y_in =} \StringTok{'Surgery_Year'}\NormalTok{, }
+  \DataTypeTok{event_in =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{event_level =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{output_type =} \StringTok{'latex'}\NormalTok{)}
+
+\CommentTok{#Use kableExtra to make fancy output}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
+\NormalTok{  linear_multivariable_output }\OperatorTok{%>%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{n), }\StringTok{'latex'}\NormalTok{, }
+  \DataTypeTok{escape =}\NormalTok{ F, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }
+  \DataTypeTok{caption =} \StringTok{'Linear Regression Multivariable Model'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{collapse_rows}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{), }\DataTypeTok{row_group_label_position =} \StringTok{'stack'}\NormalTok{,}
+                            \DataTypeTok{headers_to_remove =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{latex_hline =} \StringTok{'major'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{10}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{footnote}\NormalTok{(}
+    \KeywordTok{paste0}\NormalTok{(}\StringTok{'Model sample size is '}\NormalTok{, }
+\NormalTok{           linear_multivariable_output }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(n) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{slice}\NormalTok{(}\DecValTok{1}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:12}Linear Regression Multivariable Model}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}{lllll}
+\toprule
+ &  & Est (95\% CI) & P Value & Overall P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Age}}\\
+\hspace{1em} &  & 0.034 (-0.014, 0.081) & 0.1617 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Gender}}\\
+\hspace{1em} & Female & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Male & -0.414 (-1.379, 0.551) & 0.3983 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Clinical AJCC Stage}}\\
+\hspace{1em} & Stage I/II (<=T2NxMx) & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Stage III (T3NxMx) & -2.190 (-3.259, -1.120) & \cellcolor{yellow}{<0.0001} & \\
+
+\hspace{1em} & Stage IV (T4NxMx) & -1.007 (-2.490, 0.476) & 0.1817 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Histology}}\\
+\hspace{1em} & Pure Urothelial Neoplasia & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Mixed Tumors & 1.109 (0.093, 2.126) & \cellcolor{yellow}{0.0326} & \\
+
+\hspace{1em} & Variant Histology & 1.661 (0.605, 2.717) & \cellcolor{yellow}{0.0022} & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{2}}\\
+\hspace{1em} &  &  &  & \vphantom{1} ---\\
+
+ &  &  &  & ---\\
+\bottomrule
+\multicolumn{5}{l}{\textit{Note: }}\\
+\multicolumn{5}{l}{Model sample size is n=166}\\
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\hypertarget{logistic-regression-example}{%
+\subsubsection{Logistic Regression
+Example}\label{logistic-regression-example}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Using pretty_model_output() for a single multivariable model}
+
+\NormalTok{my_fit <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}
+\NormalTok{  Any_Downstaging }\OperatorTok{==}\StringTok{ 'Downstaging'} \OperatorTok{~}\StringTok{ }\NormalTok{Age_At_Diagnosis }\OperatorTok{+}\StringTok{ }\NormalTok{Gender }\OperatorTok{+}\StringTok{ }\NormalTok{Clinical_Stage_Grouped }\OperatorTok{+}\StringTok{ }
+\StringTok{    }\NormalTok{Histology_Grouped, }\DataTypeTok{data =}\NormalTok{ Bladder_Cancer, }\DataTypeTok{family =} \KeywordTok{binomial}\NormalTok{(}\DataTypeTok{link =} \StringTok{"logit"}\NormalTok{))}
+\KeywordTok{pretty_model_output}\NormalTok{(}\DataTypeTok{fit =}\NormalTok{ my_fit, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l|l|l|l|l}
+\hline
+Variable & Level & OR (95\% CI) & P Value & Overall P Value\\
+\hline
+Age &  & 1.027 (0.989, 1.069) & 0.1737 & \\
+\hline
+Gender & Female & 1.0 (Reference) & - & \\
+\hline
+Gender & Male & 0.612 (0.281, 1.318) & 0.2111 & \\
+\hline
+Clinical AJCC Stage & Stage I/II (<=T2NxMx) & 1.0 (Reference) & - & \\
+\hline
+Clinical AJCC Stage & Stage III (T3NxMx) & 0.295 (0.111, 0.714) & 0.0095 & \\
+\hline
+Clinical AJCC Stage & Stage IV (T4NxMx) & 0.356 (0.099, 1.131) & 0.0912 & \\
+\hline
+Histology & Pure Urothelial Neoplasia & 1.0 (Reference) & - & \\
+\hline
+Histology & Mixed Tumors & 1.102 (0.495, 2.464) & 0.8114 & \\
+\hline
+Histology & Variant Histology & 0.457 (0.188, 1.058) & 0.0740 & \\
+\hline
+ &  &  &  & ---\\
+\hline
+ &  &  &  & ---\\
+\hline
+\end{tabular}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{vars_to_run =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'Age_At_Diagnosis'}\NormalTok{, }\StringTok{'Gender'}\NormalTok{, }\StringTok{'Clinical_Stage_Grouped'}\NormalTok{, }\StringTok{'Histology_Grouped'}\NormalTok{)}
+
+\CommentTok{# Using run_pretty_model_output() for multiple univariate logistic regression models}
+\CommentTok{# Use purrr::map_dfr function to run the run_pretty_model_output() multiple times}
+\NormalTok{logistic_univariate_output <-}\StringTok{ }\NormalTok{purrr}\OperatorTok{::}\KeywordTok{map_dfr}\NormalTok{(}
+\NormalTok{  vars_to_run, run_pretty_model_output, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer, }
+  \DataTypeTok{y_in =} \StringTok{'Any_Downstaging'}\NormalTok{, }\DataTypeTok{event_in =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{event_level =} \StringTok{'Downstaging'}\NormalTok{, }
+  \DataTypeTok{output_type =} \StringTok{'latex'}\NormalTok{) }
+
+\CommentTok{#Use kableExtra to make fancy output}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
+\NormalTok{  logistic_univariate_output, }\StringTok{'latex'}\NormalTok{, }\DataTypeTok{escape =}\NormalTok{ F, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }
+  \DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }\DataTypeTok{caption =} \StringTok{'Logistic Regression Univariate Models'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{collapse_rows}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{), }\DataTypeTok{row_group_label_position =} \StringTok{'stack'}\NormalTok{,}
+                            \DataTypeTok{headers_to_remove =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{latex_hline =} \StringTok{'major'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:14}Logistic Regression Univariate Models}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}{llllll}
+\toprule
+ &  & OR (95\% CI) & P Value & Overall P Value & n\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Age}}\\
+\hspace{1em} &  & 1.020 (0.984, 1.059) & 0.2785 &  & n=166\\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Gender}}\\
+\hspace{1em} & Female & 1.0 (Reference) & --- &  & n=166\\
+
+\hspace{1em} & Male & 0.818 (0.404, 1.667) & 0.5767 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Clinical AJCC Stage}}\\
+\hspace{1em} & Stage I/II (<=T2NxMx) & 1.0 (Reference) & --- &  & n=166\\
+
+\hspace{1em} & Stage III (T3NxMx) & 0.369 (0.145, 0.857) & \cellcolor{yellow}{0.0261} &  & \\
+
+\hspace{1em} & Stage IV (T4NxMx) & 0.503 (0.151, 1.475) & 0.2283 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{1}}\\
+\hspace{1em} &  &  &  & --- \vphantom{1} & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Histology}}\\
+\hspace{1em} & Pure Urothelial Neoplasia & 1.0 (Reference) & --- &  & n=166\\
+
+\hspace{1em} & Mixed Tumors & 0.864 (0.410, 1.800) & 0.6974 &  & \\
+
+\hspace{1em} & Variant Histology & 0.550 (0.233, 1.237) & 0.1570 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{1}}\\
+\hspace{1em} &  &  &  & --- & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# Using run_pretty_model_output() for a multivariable logistic regression model}
+\NormalTok{logistic_multivariable_output <-}\StringTok{ }\KeywordTok{run_pretty_model_output}\NormalTok{(}
+  \DataTypeTok{x_in =}\NormalTok{ vars_to_run, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer, }\DataTypeTok{y_in =} \StringTok{'Any_Downstaging'}\NormalTok{, }
+  \DataTypeTok{event_in =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{event_level =} \StringTok{'Downstaging'}\NormalTok{, }\DataTypeTok{output_type =} \StringTok{'latex'}\NormalTok{)}
+
+\CommentTok{#Use kableExtra to make fancy output}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
+\NormalTok{  logistic_multivariable_output }\OperatorTok{%>%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{n), }\StringTok{'latex'}\NormalTok{, }
+  \DataTypeTok{escape =}\NormalTok{ F, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }
+  \DataTypeTok{caption =} \StringTok{'Logistic Regression Multivariable Model'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{collapse_rows}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{), }\DataTypeTok{row_group_label_position =} \StringTok{'stack'}\NormalTok{,}
+                            \DataTypeTok{headers_to_remove =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{latex_hline =} \StringTok{'major'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{10}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{footnote}\NormalTok{(}
+    \KeywordTok{paste0}\NormalTok{(}\StringTok{'Model sample size is '}\NormalTok{, }
+\NormalTok{           logistic_multivariable_output }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(n) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{slice}\NormalTok{(}\DecValTok{1}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:15}Logistic Regression Multivariable Model}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}{lllll}
+\toprule
+ &  & OR (95\% CI) & P Value & Overall P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Age}}\\
+\hspace{1em} &  & 1.027 (0.989, 1.069) & 0.1737 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Gender}}\\
+\hspace{1em} & Female & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Male & 0.612 (0.281, 1.318) & 0.2111 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Clinical AJCC Stage}}\\
+\hspace{1em} & Stage I/II (<=T2NxMx) & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Stage III (T3NxMx) & 0.295 (0.111, 0.714) & \cellcolor{yellow}{0.0095} & \\
+
+\hspace{1em} & Stage IV (T4NxMx) & 0.356 (0.099, 1.131) & 0.0912 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Histology}}\\
+\hspace{1em} & Pure Urothelial Neoplasia & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Mixed Tumors & 1.102 (0.495, 2.464) & 0.8114 & \\
+
+\hspace{1em} & Variant Histology & 0.457 (0.188, 1.058) & 0.0740 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{2}}\\
+\hspace{1em} &  &  &  & \vphantom{1} ---\\
+
+ &  &  &  & ---\\
+\bottomrule
+\multicolumn{5}{l}{\textit{Note: }}\\
+\multicolumn{5}{l}{Model sample size is n=166}\\
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\hypertarget{cox-proportional-hazards-regression-example}{%
+\subsubsection{Cox Proportional-Hazards Regression
+Example}\label{cox-proportional-hazards-regression-example}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Using pretty_model_output() for a single multivariable model}
+
+\NormalTok{surv_obj <-}\StringTok{ }\NormalTok{survival}\OperatorTok{::}\KeywordTok{Surv}\NormalTok{(Bladder_Cancer}\OperatorTok{$}\NormalTok{Survival_Months, Bladder_Cancer}\OperatorTok{$}\NormalTok{Vital_Status }\OperatorTok{==}\StringTok{ 'Dead'}\NormalTok{)   }
+\NormalTok{my_fit <-}\StringTok{ }\NormalTok{survival}\OperatorTok{::}\KeywordTok{coxph}\NormalTok{(}
+\NormalTok{  surv_obj }\OperatorTok{~}\StringTok{ }\NormalTok{Age_At_Diagnosis }\OperatorTok{+}\StringTok{ }\NormalTok{Gender }\OperatorTok{+}\StringTok{ }\NormalTok{Clinical_Stage_Grouped }\OperatorTok{+}\StringTok{ }
+\StringTok{    }\NormalTok{Histology_Grouped, }\DataTypeTok{data =}\NormalTok{ Bladder_Cancer)}
+\KeywordTok{pretty_model_output}\NormalTok{(}\DataTypeTok{fit =}\NormalTok{ my_fit, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l|l|l|l|l}
+\hline
+Variable & Level & HR (95\% CI) & P Value & Overall P Value\\
+\hline
+Age &  & 0.997 (0.967, 1.028) & 0.8384 & \\
+\hline
+Gender & Female & 1.0 (Reference) & - & \\
+\hline
+Gender & Male & 1.677 (0.863, 3.256) & 0.1269 & \\
+\hline
+Clinical AJCC Stage & Stage I/II (<=T2NxMx) & 1.0 (Reference) & - & \\
+\hline
+Clinical AJCC Stage & Stage III (T3NxMx) & 2.217 (1.209, 4.065) & 0.0101 & \\
+\hline
+Clinical AJCC Stage & Stage IV (T4NxMx) & 1.683 (0.662, 4.275) & 0.2740 & \\
+\hline
+Histology & Pure Urothelial Neoplasia & 1.0 (Reference) & - & \\
+\hline
+Histology & Mixed Tumors & 1.276 (0.678, 2.400) & 0.4501 & \\
+\hline
+Histology & Variant Histology & 1.419 (0.715, 2.814) & 0.3168 & \\
+\hline
+ &  &  &  & ---\\
+\hline
+ &  &  &  & ---\\
+\hline
+\end{tabular}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{vars_to_run =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'Age_At_Diagnosis'}\NormalTok{, }\StringTok{'Gender'}\NormalTok{, }\StringTok{'Clinical_Stage_Grouped'}\NormalTok{, }\StringTok{'Histology_Grouped'}\NormalTok{)}
+
+\CommentTok{# Using run_pretty_model_output() for multiple univariate Cox regression models}
+\CommentTok{# Use purrr::map_dfr function to run the run_pretty_model_output() multiple times}
+\NormalTok{cox_univariate_output <-}\StringTok{ }\NormalTok{purrr}\OperatorTok{::}\KeywordTok{map_dfr}\NormalTok{(}
+\NormalTok{  vars_to_run, run_pretty_model_output, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer, }
+  \DataTypeTok{y_in =} \StringTok{'Survival_Months'}\NormalTok{, }\DataTypeTok{event_in =} \StringTok{'Vital_Status'}\NormalTok{, }\DataTypeTok{event_level =} \StringTok{'Dead'}\NormalTok{, }
+  \DataTypeTok{output_type =} \StringTok{'latex'}\NormalTok{) }
+
+\CommentTok{#Use kableExtra to make fancy output}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
+\NormalTok{  cox_univariate_output, }\StringTok{'latex'}\NormalTok{, }\DataTypeTok{escape =}\NormalTok{ F, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }
+  \DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }\DataTypeTok{caption =} \StringTok{'Cox Proportional-Hazards Regression Univariate Models'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{collapse_rows}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{), }\DataTypeTok{row_group_label_position =} \StringTok{'stack'}\NormalTok{,}
+                            \DataTypeTok{headers_to_remove =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{latex_hline =} \StringTok{'major'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:17}Cox Proportional-Hazards Regression Univariate Models}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}{llllll}
+\toprule
+ &  & HR (95\% CI) & P Value & Overall P Value & n (events)\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Age}}\\
+\hspace{1em} &  & 1.004 (0.973, 1.035) & 0.8063 &  & n=166 (59)\\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Gender}}\\
+\hspace{1em} & Female & 1.0 (Reference) & --- &  & n=166 (59)\\
+
+\hspace{1em} & Male & 1.412 (0.748, 2.663) & 0.2872 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Clinical AJCC Stage}}\\
+\hspace{1em} & Stage I/II (<=T2NxMx) & 1.0 (Reference) & --- &  & n=166 (59)\\
+
+\hspace{1em} & Stage III (T3NxMx) & 1.985 (1.128, 3.494) & \cellcolor{yellow}{0.0174} &  & \\
+
+\hspace{1em} & Stage IV (T4NxMx) & 1.632 (0.684, 3.891) & 0.2693 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{1}}\\
+\hspace{1em} &  &  &  & --- \vphantom{1} & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Histology}}\\
+\hspace{1em} & Pure Urothelial Neoplasia & 1.0 (Reference) & --- &  & n=166 (59)\\
+
+\hspace{1em} & Mixed Tumors & 1.540 (0.846, 2.802) & 0.1578 &  & \\
+
+\hspace{1em} & Variant Histology & 1.257 (0.640, 2.470) & 0.5062 &  & \\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{1}}\\
+\hspace{1em} &  &  &  & --- & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# Using run_pretty_model_output() for a multivariable Cox regression model}
+\NormalTok{cox_multivariable_output <-}\StringTok{ }\KeywordTok{run_pretty_model_output}\NormalTok{(}
+  \DataTypeTok{x_in =}\NormalTok{ vars_to_run, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer, }\DataTypeTok{y_in =} \StringTok{'Survival_Months'}\NormalTok{, }
+  \DataTypeTok{event_in =} \StringTok{'Vital_Status'}\NormalTok{, }\DataTypeTok{event_level =} \StringTok{'Dead'}\NormalTok{, }\DataTypeTok{output_type =} \StringTok{'latex'}\NormalTok{)}
+
+\CommentTok{#Use kableExtra to make fancy output}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
+\NormalTok{  cox_multivariable_output }\OperatorTok{%>%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\StringTok{`}\DataTypeTok{n (events)}\StringTok{`}\NormalTok{), }\StringTok{'latex'}\NormalTok{, }
+  \DataTypeTok{escape =}\NormalTok{ F, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }
+  \DataTypeTok{caption =} \StringTok{'Cox Proportional-Hazards Regression Multivariable Model'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{collapse_rows}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{), }\DataTypeTok{row_group_label_position =} \StringTok{'stack'}\NormalTok{,}
+                            \DataTypeTok{headers_to_remove =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{latex_hline =} \StringTok{'major'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{10}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{footnote}\NormalTok{(}
+    \KeywordTok{paste0}\NormalTok{(}\StringTok{'Model sample size (events) is '}\NormalTok{, }
+\NormalTok{           cox_multivariable_output }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\StringTok{`}\DataTypeTok{n (events)}\StringTok{`}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{slice}\NormalTok{(}\DecValTok{1}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:18}Cox Proportional-Hazards Regression Multivariable Model}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}{lllll}
+\toprule
+ &  & HR (95\% CI) & P Value & Overall P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Age}}\\
+\hspace{1em} &  & 0.997 (0.967, 1.028) & 0.8384 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Gender}}\\
+\hspace{1em} & Female & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Male & 1.677 (0.863, 3.256) & 0.1269 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Clinical AJCC Stage}}\\
+\hspace{1em} & Stage I/II (<=T2NxMx) & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Stage III (T3NxMx) & 2.217 (1.209, 4.065) & \cellcolor{yellow}{0.0101} & \\
+
+\hspace{1em} & Stage IV (T4NxMx) & 1.683 (0.662, 4.275) & 0.2740 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Histology}}\\
+\hspace{1em} & Pure Urothelial Neoplasia & 1.0 (Reference) & --- & \\
+
+\hspace{1em} & Mixed Tumors & 1.276 (0.678, 2.400) & 0.4501 & \\
+
+\hspace{1em} & Variant Histology & 1.419 (0.715, 2.814) & 0.3168 & \\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{2}}\\
+\hspace{1em} &  &  &  & \vphantom{1} ---\\
+
+ &  &  &  & ---\\
+\bottomrule
+\multicolumn{5}{l}{\textit{Note: }}\\
+\multicolumn{5}{l}{Model sample size (events) is n=166 (59)}\\
+\end{tabular}
+\end{table}
+
+\hypertarget{kaplanmeier-output-functions}{%
+\subsection{Kaplan--Meier Output
+Functions}\label{kaplanmeier-output-functions}}
+
+\texttt{pretty\_km\_output()} and \texttt{run\_pretty\_km\_output()} are
+used to produce professional tables with Kaplan--Meier median survival
+estimates, and the estimates at given time points, if listed.
+\texttt{pretty\_km\_output()} uses a survfit object, while
+\texttt{run\_pretty\_km\_output()} uses the variables, and strata if
+applicable, and runs creates the survfit objects, also calculating the
+log-rank p value, if applicable.
+
+Many details can be adjusted, such as title (will be added as column),
+strata name, confidence level, survival estimate prefix (default is
+``Time''), survival estimate, median estimate, and p value rounded
+digits, significant alpha level for highlighting along with color,
+italic, and bolding p value options, and latex or non-latex desired
+output.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# Using pretty_km_output() for a single comparisons}
+\NormalTok{surv_obj <-}\StringTok{ }\NormalTok{survival}\OperatorTok{::}\KeywordTok{Surv}\NormalTok{(Bladder_Cancer}\OperatorTok{$}\NormalTok{Survival_Months, }
+\NormalTok{                           Bladder_Cancer}\OperatorTok{$}\NormalTok{Vital_Status }\OperatorTok{==}\StringTok{ 'Dead'}\NormalTok{)   }
+\NormalTok{downstage_fit <-}\StringTok{ }\NormalTok{survival}\OperatorTok{::}\KeywordTok{survfit}\NormalTok{(surv_obj }\OperatorTok{~}\StringTok{ }\NormalTok{PT0N0, }\DataTypeTok{data =}\NormalTok{ Bladder_Cancer)}
+
+\KeywordTok{pretty_km_output}\NormalTok{(}\DataTypeTok{fit =}\NormalTok{ downstage_fit, }\DataTypeTok{time_est =} \DecValTok{60}\NormalTok{, }
+                 \DataTypeTok{surv_est_prefix =} \StringTok{'Month'}\NormalTok{, }\DataTypeTok{surv_est_digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l|l|r|r|l|l}
+\hline
+Group & Level & N & N Events & Median Estimate & Month:60\\
+\hline
+PT0N0 & No Completed Response & 131 & 57 & 48.7 (30.3, N.E.) & 0.493 (0.399, 0.609)\\
+\hline
+PT0N0 & Complete Response & 35 & 2 & N.E. & 0.940 (0.863, 1.000)\\
+\hline
+\end{tabular}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Using run_pretty_km_output() for multiple comparisons}
+
+\CommentTok{# First create vector of strata to compare (NA for no strate). }
+\NormalTok{vars_to_run =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OtherTok{NA}\NormalTok{, }\StringTok{'Gender'}\NormalTok{, }\StringTok{'Clinical_Stage_Grouped'}\NormalTok{, }\StringTok{'PT0N0'}\NormalTok{, }\StringTok{'Any_Downstaging'}\NormalTok{)}
+
+\CommentTok{# Next use purrr::map_dfr function to run the run_pretty_km_output() multiple times}
+\NormalTok{km_output <-}\StringTok{ }\NormalTok{purrr}\OperatorTok{::}\KeywordTok{map_dfr}\NormalTok{(}
+\NormalTok{  vars_to_run, run_pretty_km_output, }\DataTypeTok{model_data =}\NormalTok{ Bladder_Cancer, }
+  \DataTypeTok{time_in =} \StringTok{'Survival_Months'}\NormalTok{, }\DataTypeTok{event_in =} \StringTok{'Vital_Status'}\NormalTok{, }\DataTypeTok{event_level =} \StringTok{'Dead'}\NormalTok{, }
+  \DataTypeTok{time_est =} \KeywordTok{c}\NormalTok{(}\DecValTok{24}\NormalTok{,}\DecValTok{60}\NormalTok{), }\DataTypeTok{surv_est_prefix =} \StringTok{'Month'}\NormalTok{, }\DataTypeTok{p_digits =} \DecValTok{5}\NormalTok{, }
+  \DataTypeTok{output_type =} \StringTok{'latex'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(Group, Level, }\KeywordTok{everything}\NormalTok{())}
+
+\CommentTok{#Finally use kableExtra to make fancy output}
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(km_output, }\StringTok{'latex'}\NormalTok{, }\DataTypeTok{escape =}\NormalTok{ F, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }
+     \DataTypeTok{caption =} \StringTok{'Kaplan–Meier Output (Multiple Comparisons)'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{collapse_rows}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{), }\DataTypeTok{row_group_label_position =} \StringTok{'stack'}\NormalTok{,}
+                            \DataTypeTok{headers_to_remove =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }\DataTypeTok{latex_hline =} \StringTok{'major'}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \FloatTok{7.5}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{footnote}\NormalTok{(}\StringTok{'Survival Percentage Estimates at 24 and 60 Months'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:20}Kaplan–Meier Output (Multiple Comparisons)}
+\centering
+\fontsize{7.5}{9.5}\selectfont
+\begin{tabular}{llrrllll}
+\toprule
+ &  & N & N Events & Median Estimate & Month:24 & Month:60 & Log-Rank P\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Overall}}\\
+\hspace{1em} &  & 166 & 59 & 70.3 (48.7, N.E.) & 0.69 (0.61, 0.77) & 0.58 (0.49, 0.68) & \\
+\cmidrule{1-8}
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Gender}}\\
+\hspace{1em} & Female & 42 & 12 & N.E. (75.6, N.E.) & 0.74 (0.61, 0.89) & 0.70 (0.56, 0.87) & 0.28463\\
+
+\hspace{1em} & Male & 124 & 47 & 68.9 (39.0, N.E.) & 0.66 (0.58, 0.76) & 0.54 (0.44, 0.66) & \\
+\cmidrule{1-8}
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Clinical AJCC Stage}}\\
+\hspace{1em} & Stage I/II (<=T2NxMx) & 118 & 34 & N.E. (61.5, N.E.) & 0.73 (0.65, 0.82) & 0.64 (0.55, 0.76) & \cellcolor{yellow}{0.04525}\\
+
+\hspace{1em} & Stage III (T3NxMx) & 32 & 19 & 35.7 (14.3, N.E.) & 0.55 (0.40, 0.76) & 0.42 (0.27, 0.66) & \\
+
+\hspace{1em} & Stage IV (T4NxMx) & 16 & 6 & 47.0 (11.5, N.E.) & 0.67 (0.46, 0.96) & 0.50 (0.25, 0.98) & \\
+\cmidrule{1-8}
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Downstaged to pT0N0}}\\
+\hspace{1em} & No Completed Response & 131 & 57 & 48.7 (30.3, N.E.) & 0.62 (0.53, 0.72) & 0.49 (0.40, 0.61) & \cellcolor{yellow}{0.00017}\\
+
+\hspace{1em} & Complete Response & 35 & 2 & N.E. & 0.94 (0.86, 1.00) & 0.94 (0.86, 1.00) & \\
+\cmidrule{1-8}
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Any Downstaging}}\\
+\hspace{1em} & No Downstaging & 97 & 49 & 32.5 (21.6, 70.3) & 0.56 (0.46, 0.68) & 0.41 (0.30, 0.55) & \cellcolor{yellow}{<0.00001}\\
+
+\hspace{1em} & Downstaging & 69 & 10 & N.E. & 0.86 (0.77, 0.95) & 0.83 (0.74, 0.94) & \\
+\bottomrule
+\multicolumn{8}{l}{\textit{Note: }}\\
+\multicolumn{8}{l}{Survival Percentage Estimates at 24 and 60 Months}\\
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\hypertarget{utility-functions}{%
+\section{Utility Functions}\label{utility-functions}}
+
+\texttt{round\_away\_0()} is a function to properly perform mathematical
+rounding (i.e.~rounding away from 0 when tied), as opposed to the
+\texttt{round()} function, which rounds to the nearest even number when
+tied. Also \texttt{round\_away\_0()} allows for trailing zeros
+(i.e.~0.100 if rounding to 3 digits).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vals_to_round =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OtherTok{NA}\NormalTok{,}\OperatorTok{-}\FloatTok{3.5}\OperatorTok{:}\FloatTok{3.5}\NormalTok{)}
+\NormalTok{vals_to_round}
+\CommentTok{#> [1]   NA -3.5 -2.5 -1.5 -0.5  0.5  1.5  2.5  3.5}
+\KeywordTok{round}\NormalTok{(vals_to_round)}
+\CommentTok{#> [1] NA -4 -2 -2  0  0  2  2  4}
+\KeywordTok{round_away_0}\NormalTok{(vals_to_round)}
+\CommentTok{#> [1] NA -4 -3 -2 -1  1  2  3  4}
+\KeywordTok{round_away_0}\NormalTok{(vals_to_round, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{, }\DataTypeTok{trailing_zeros =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{#> [1] NA      "-3.50" "-2.50" "-1.50" "-0.50" "0.50"  "1.50"  "2.50"  "3.50"}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{get\_session\_info()} produces reproducible tables, which are
+great to add to the end of reports. The first table gives Software
+Session Information and the second table gives Software Package Version
+Information \texttt{get\_full\_name()} is a function used by
+\texttt{get\_session\_info()} to get the user's name, based on user's
+ID.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my_session_info <-}\StringTok{ }\KeywordTok{get_session_info}\NormalTok{()}
+
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(my_session_info}\OperatorTok{$}\NormalTok{platform_table, }\StringTok{'latex'}\NormalTok{, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }
+      \DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }\DataTypeTok{caption =} \StringTok{"Reproducibility Software Session Information"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{      }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:22}Reproducibility Software Session Information}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}{ll}
+\toprule
+name & value\\
+\midrule
+version & R version 3.6.1 (2019-07-05)\\
+os & Windows 10 x64\\
+system & x86\_64, mingw32\\
+ui & RTerm\\
+language & (EN)\\
+collate & C\\
+ctype & English\_United States.1252\\
+tz & America/New\_York\\
+date & 2019-11-22\\
+repo & git@gitlab.moffitt.usf.edu:ReproducibleResearch/MoffittFunctions.git\\
+file name & MoffittFunctions.Rmd\\
+location & vignettes\\
+location & vignettes\\
+user & Zachary Thompson\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my_session_info <-}\StringTok{ }\KeywordTok{get_session_info}\NormalTok{()}
+
+ 
+\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(my_session_info}\OperatorTok{$}\NormalTok{packages_table, }\StringTok{'latex'}\NormalTok{, }\DataTypeTok{booktabs =} \OtherTok{TRUE}\NormalTok{, }
+      \DataTypeTok{linesep =} \StringTok{''}\NormalTok{, }\DataTypeTok{caption =} \StringTok{"Reproducibility Software Package Version Information"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{      }\NormalTok{kableExtra}\OperatorTok{::}\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{font_size =} \DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:23}Reproducibility Software Package Version Information}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}{llll}
+\toprule
+package & version & date & source\\
+\midrule
+dplyr & 0.8.3 & 2019-07-04 & CRAN (R 3.6.1)\\
+MoffittFunctions & 1.0.0 & 2019-04-03 & local\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\end{document}
